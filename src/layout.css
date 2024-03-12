@@ -1,0 +1,55 @@
+.main {
+  height: 100%;
+  padding: 10px;
+}
+
+.menu {
+  height: 100%;
+  color: white;
+}
+.content {
+  background-color: #e9f1f7;
+  border-radius: 10px;
+  height: 100%;
+}
+
+.menu-container {
+  /* border: 1px solid white; */
+  margin: 20px 0px 20px 0px;
+  /* height: 90%; */
+}
+
+.user-name {
+  font-size: 30px;
+  font-family: poppins;
+  font-weight: bolder;
+  border-bottom: 1px solid #979797;
+  /* height: 30%; */
+  /* border: 1px solid white; */
+}
+
+.menu-name {
+  
+  font-size: 20px;
+  color: #979797;
+  font-family: poppins;
+  
+}
+
+.menu-items > ul,li {
+  list-style-type: none;
+  margin: 15px 0px 15px 0px;
+  padding: 0px;
+}
+
+.menu-items > ul > li > .active{
+    color: white;
+    font-weight: bolder;
+    font-size: 25px;
+}
+
+.test{
+    width: 200px;
+    height: 200px;
+    background-color: white;
+}
