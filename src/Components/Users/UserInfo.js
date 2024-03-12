@@ -228,7 +228,7 @@ const [price, setPrice] = useState({})
               <span className="text-success font-weight-bold">
                 {data.Subscription ? (
                   "Active"
-                ) : (
+                ) :  (
                   <span className="text-danger">InActive</span>
                 )}
               </span>
