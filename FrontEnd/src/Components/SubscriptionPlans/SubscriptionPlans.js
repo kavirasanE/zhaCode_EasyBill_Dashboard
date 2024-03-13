@@ -24,12 +24,14 @@ const SubscriptionPlans = () => {
     },
     // Add more entries as needed
   ];
-   const {appName,subscription} =useContext(DataContext);
+   const {appName,transaction,} =useContext(DataContext);
+   console.log(transaction);
+   let subscriptionOpen = true
    
 return (
 <div>
  
-     <ManageSubscriptionInfo  data={data}/>
+     <ManageSubscriptionInfo  transaction={transaction} subscriptionOpen={subscriptionOpen}/>
  
 </div>
 )

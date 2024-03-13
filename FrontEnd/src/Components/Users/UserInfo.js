@@ -51,6 +51,10 @@ const UserInfo = ({
   //   rotate: "270deg",
   // };
 
+  function handleOkButton(){
+    setModal2Open(false)  `` 
+  }
+
   return (
     <>
       {/* <Button type="primary" onClick={() => setModal2Open(true)}>
@@ -129,7 +133,7 @@ const UserInfo = ({
           style={userStyles}
           className="row align-items-center border  rounded-3 border-primary  m-2 p-2"
         >
-          <div class=" col form-floating ">
+          {/* <div class=" col form-floating ">
             <input
               type="text"
               class="form-control fw-bold "
@@ -138,8 +142,9 @@ const UserInfo = ({
               value={data["Shop Name"]}
             />
             <label for="floatingInput">Shop Name</label>
-          </div>
-
+            
+          </div> */}
+          <p className="col mx-2 my-2">Shop Name: <span>{data["Shop Name"]}</span></p>
           <p className=" col mx-2 my-2">
             Subscription:
             <span className="text-success fw-bold">

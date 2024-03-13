@@ -8,6 +8,7 @@ export const DataProvider = ({ children }) => {
   const [data, setData] = useState([]);
   const[subscription,setSubscription] =useState([]);
   const[transaction,setTransaction] =useState([]);
+ 
 
   useEffect (() => {
       localStorage.setItem('data',JSON.stringify(data));
