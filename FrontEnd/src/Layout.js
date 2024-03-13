@@ -21,7 +21,7 @@ const Layout = () => {
               </li>
               <li>
                 <NavLink className="menu-name nav-link" to="users">
-                  Users
+                  Manage Users
                 </NavLink>
               </li>
              
