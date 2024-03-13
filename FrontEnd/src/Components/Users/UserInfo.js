@@ -19,13 +19,15 @@ const UserInfo = ({
   // const [open, setOpen] = useState(false);
   // const [allClose, setAllClose] = useState(true);
   const { subscription } = useContext(DataContext);
-  const [price, setPrice] = useState({});
+  const [plan, setPlan] = useState({});
   const [opened, setOpen] = useState(false);
+  const [customSubDate, setCustomSubDate] = useState({});
   const [items, setItems] = useState([]);
-  const[checkboxOpen,setCheckboxOpen] =useState(true)
+  const [checkboxOpen, setCheckboxOpen] = useState(true);
+
   const handleMenuClick = (e) => {
     const getPrice = subscription.filter((itm) => itm.Sub_Type_Id == e.key);
-    setPrice({ month: getPrice[0].Sub_Months, price: getPrice[0].Price });
+    setPlan({ month: getPrice[0].Sub_Months, price: getPrice[0].Price });
   };
 
   useEffect(() => {
@@ -51,8 +53,12 @@ const UserInfo = ({
   //   rotate: "270deg",
   // };
 
-  function handleOkButton(){
-    setModal2Open(false)  `` 
+  function handleOkButton(e) {
+    setModal2Open(false);
+    console.log(plan);
+    console.log(customSubDate);
+    setPlan({});
+    setCustomSubDate({});
   }
 
   return (
@@ -65,7 +71,7 @@ const UserInfo = ({
         title={editData["Shop Name"]}
         centered
         open={modal2Open}
-        onOk={() => setModal2Open(false)}
+        onOk={handleOkButton}
         onCancel={() => setModal2Open(false)}
       >
         <div className="row p-4">
@@ -77,47 +83,72 @@ const UserInfo = ({
             {editData["Mobile Number"]}
           </p>
         </div>
-        
 
         {/* Only if user choose custom the should appear, disappering dropdown */}
-      
+
         <div className="row p-4 gap-2">
-        { !checkboxOpen &&
-        <>  
-        <div className="row justify-content-center align-items-start">
-          <Dropdown
-            menu={{
-              items,
-              onClick: handleMenuClick,
-            }}
-            onOpenChange={handleOpenChange}
-            opened={opened}
-            className="col-4"
-          >
-            <a onClick={(e) => e.preventDefault()} className="fw-bold">
-              <Space>
-                {price.month ? `${price.month} - Months` : "Choose plan"}
-                <DownOutlined />
-              </Space>
-            </a>
-          </Dropdown>
-        { price.price > 0 &&
-         <h5 className="col-4"><span>Price:Rs.</span>{price.price}</h5>
-         }
-        </div>
-          <div className="col-5">
-            <label id={data.UDR_Id}> Subscription Start date</label>
-            <input type="date" onChange={(e) => console.log(e.target.value)} />
+          <div className="row justify-content-center align-items-start">
+            <Dropdown
+              menu={{
+                items,
+                onClick: handleMenuClick,
+              }}
+              onOpenChange={handleOpenChange}
+              opened={opened}
+              className="col-4"
+              onChange={() => console.log("changed")}
+            >
+              <a onClick={(e) => e.preventDefault()} className="fw-bold">
+                <Space>
+                  {plan.month ? `${plan.month} - Months` : "Choose plan"}
+                  <DownOutlined />
+                </Space>
+              </a>
+            </Dropdown>
+            {!checkboxOpen && plan.price > 0 && (
+              <h5 className="col-4">
+                <span>Price:Rs.</span>
+                {plan.price}
+              </h5>
+            )}
           </div>
-          <div className="col-5">
-            <label id={data.UDR_Id}> Subscription end date</label>
-            <input type="date" />
-          </div> </>}
+          {!checkboxOpen && (
+            <>
+              <div className="col-5">
+                <label id={data.UDR_Id}> Subscription Start date</label>
+                <input
+                  type="date"
+                  onChange={(e) => {
+                    setCustomSubDate((preVal) => ({
+                      ...preVal,
+                      startDate: e.target.value,
+                    }));
+                  }}
+                />
+              </div>
+              <div className="col-5">
+                <label id={data.UDR_Id}> Subscription end date</label>
+                <input
+                  type="date"
+                  onChange={(e) => {
+                    setCustomSubDate((preVal) => ({
+                      ...preVal,
+                      endDate: e.target.value,
+                    }));
+                  }}
+                />
+              </div>
+            </>
+          )}
           <div class="form-check">
             <input
               class="form-check-input"
               type="checkbox"
-              onClick={() => setCheckboxOpen(!checkboxOpen)}
+              onClick={() => {
+                setCheckboxOpen(!checkboxOpen);
+                setPlan({});
+                setCustomSubDate({});
+              }}
               id="flexCheckDefault"
             />
             <label class="form-check-label" for="flexCheckDefault">
@@ -144,7 +175,9 @@ const UserInfo = ({
             <label for="floatingInput">Shop Name</label>
             
           </div> */}
-          <p className="col mx-2 my-2">Shop Name: <span>{data["Shop Name"]}</span></p>
+          <p className="col mx-2 my-2">
+            Shop Name: <span>{data["Shop Name"]}</span>
+          </p>
           <p className=" col mx-2 my-2">
             Subscription:
             <span className="text-success fw-bold">
