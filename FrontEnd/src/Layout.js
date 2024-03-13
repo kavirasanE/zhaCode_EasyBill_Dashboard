@@ -35,11 +35,11 @@ const Layout = () => {
                   <span className=" text-nowrap"> Transaction History </span>
                 </NavLink>
               </li>
-              <li>
+              {/* <li>
                 <NavLink className="menu-name nav-link" to="userexample">
                   UsersExample
                 </NavLink>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>

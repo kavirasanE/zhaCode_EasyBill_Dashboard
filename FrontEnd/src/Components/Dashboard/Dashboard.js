@@ -4,7 +4,7 @@ import React, { useEffect, useState, useContext } from "react";
 import DataContext from "../../Context/DataProvider";
 
 const Dashboard = () => {
-  const { appName, data, setData, subscription, setSubscription } =
+  const { appName, data, setData, subscription, setSubscription,transaction,setTransaction} =
     useContext(DataContext);
   const [dashboardData, setDashboardData] = useState([]);
   useEffect(() => {
@@ -55,6 +55,7 @@ const Dashboard = () => {
         const data = await response.json();
         setData(data.results);
         setSubscription(data.subscriptions);
+        setTransaction(data.transaction)  
       }
     } catch (err) {
       console.log(err);

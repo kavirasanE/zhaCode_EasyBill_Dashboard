@@ -1,5 +1,6 @@
 import './subscriptionplans.css';
-import React from 'react';
+import React, { useContext } from 'react';
+ import DataContext from '../../Context/DataProvider';
 import ManageSubscriptionInfo from '../ManageSubscriptions/ManageSubscriptionInfo'
 const SubscriptionPlans = () => {
   const data = [
@@ -23,11 +24,12 @@ const SubscriptionPlans = () => {
     },
     // Add more entries as needed
   ];
-  
+   const {appName,subscription} =useContext(DataContext);
+   
 return (
 <div>
  
-     <ManageSubscriptionInfo data ={data} />
+     <ManageSubscriptionInfo  data={data}/>
  
 </div>
 )

@@ -1,11 +1,11 @@
-import React, { useState, memo,useContext, useEffect } from "react";
+import React, { useState, memo, useContext, useEffect } from "react";
 import { MdArrowBackIos } from "react-icons/md";
 import "./users.css";
 import "mdb-ui-kit/css/mdb.min.css";
 import { DownOutlined } from "@ant-design/icons";
-import { Dropdown, Space } from "antd";
+import { Checkbox, Dropdown, Space } from "antd";
 import { Button, Modal } from "antd";
-import DataContext from "../../Context/DataProvider"
+import DataContext from "../../Context/DataProvider";
 
 const UserInfo = ({
   data,
@@ -18,21 +18,23 @@ const UserInfo = ({
 }) => {
   // const [open, setOpen] = useState(false);
   // const [allClose, setAllClose] = useState(true);
-  const {subscription} =useContext(DataContext)
-const [price, setPrice] = useState({})
+  const { subscription } = useContext(DataContext);
+  const [price, setPrice] = useState({});
   const [opened, setOpen] = useState(false);
-  const [items, setItems] = useState([])
+  const [items, setItems] = useState([]);
+  const[checkboxOpen,setCheckboxOpen] =useState(true)
   const handleMenuClick = (e) => {
-    const getPrice = subscription.filter(itm => itm.Sub_Type_Id == e.key)
-    setPrice({month:getPrice[0].Sub_Months,price:getPrice[0].Price})
-
+    const getPrice = subscription.filter((itm) => itm.Sub_Type_Id == e.key);
+    setPrice({ month: getPrice[0].Sub_Months, price: getPrice[0].Price });
   };
 
-  useEffect(()=>{
-    let out = subscription.map(itm => {return {label: itm.Sub_Months, key:itm.Sub_Type_Id}})
-    setItems(out)
-  },[])
- 
+  useEffect(() => {
+    let out = subscription.map((itm) => {
+      return { label: itm.Sub_Months, key: itm.Sub_Type_Id };
+    });
+    setItems(out);
+  }, []);
+
   const handleOpenChange = (nextOpen, info) => {
     if (info.source === "trigger" || nextOpen) {
       setOpen(nextOpen);
@@ -56,15 +58,29 @@ const [price, setPrice] = useState({})
       </Button> */}
 
       <Modal
-        title="Vertically centered modal dialog"
+        title={editData["Shop Name"]}
         centered
         open={modal2Open}
         onOk={() => setModal2Open(false)}
         onCancel={() => setModal2Open(false)}
       >
-        <div className="p-2 px-4 mx-10 d-flex gap-5">
-          <p>{editData["Shop Name"]}</p>
-          <p>{editData["Mobile Number"]}</p>
+        <div className="row p-4">
+          <p className="col-6">
+            <span className="fw-bold"> ShopName: </span> {editData["Shop Name"]}
+          </p>
+          <p className="col-6">
+            <span className="fw-bold">Mobile Number:</span>{" "}
+            {editData["Mobile Number"]}
+          </p>
+        </div>
+        
+
+        {/* Only if user choose custom the should appear, disappering dropdown */}
+      
+        <div className="row p-4 gap-2">
+        { !checkboxOpen &&
+        <>  
+        <div className="row justify-content-center align-items-start">
           <Dropdown
             menu={{
               items,
@@ -72,39 +88,39 @@ const [price, setPrice] = useState({})
             }}
             onOpenChange={handleOpenChange}
             opened={opened}
+            className="col-4"
           >
-            <a onClick={(e) => e.preventDefault()}>
+            <a onClick={(e) => e.preventDefault()} className="fw-bold">
               <Space>
-              {price.month ? `${price.month} - Months` : "Choose plan"}
+                {price.month ? `${price.month} - Months` : "Choose plan"}
                 <DownOutlined />
               </Space>
             </a>
           </Dropdown>
-          <h1>Price: {price.price}</h1>
-          {/* <Dropdown
-            menu={{
-              items,
-              onClick: handleMenuClick,
-            }}
-            onOpenChange={handleOpenChange}
-            opened={opened}
-          >
-            <a onClick={(e) => e.preventDefault()}>
-              <Space>
-                Price
-                <DownOutlined />
-              </Space>
-            </a>
-          </Dropdown> */}
+        { price.price > 0 &&
+         <h5 className="col-4"><span>Price:Rs.</span>{price.price}</h5>
+         }
         </div>
-
-        {/* Only if user choose custom the should appear, disappering dropdown */}
-        <div className="row p-4 gap-2">
-          <label id={data.UDR_Id}> Subscription Start date</label>
-          <input type="date" onChange={(e)=>console.log(e.target.value)} />
-          <label id={data.UDR_Id}> Subscription end date</label>
-          <input type="date" />
-          <input type="text" value={"dummy"} />
+          <div className="col-5">
+            <label id={data.UDR_Id}> Subscription Start date</label>
+            <input type="date" onChange={(e) => console.log(e.target.value)} />
+          </div>
+          <div className="col-5">
+            <label id={data.UDR_Id}> Subscription end date</label>
+            <input type="date" />
+          </div> </>}
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              onClick={() => setCheckboxOpen(!checkboxOpen)}
+              id="flexCheckDefault"
+            />
+            <label class="form-check-label" for="flexCheckDefault">
+              Custom
+            </label>
+          </div>
+          <input type="text" value={"dummy"} className="mx-10" />
         </div>
       </Modal>
 
@@ -228,7 +244,7 @@ const [price, setPrice] = useState({})
               <span className="text-success font-weight-bold">
                 {data.Subscription ? (
                   "Active"
-                ) :  (
+                ) : (
                   <span className="text-danger">InActive</span>
                 )}
               </span>

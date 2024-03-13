@@ -1,7 +1,6 @@
 import React, { useState, memo } from "react";
 import { MdArrowBackIos } from "react-icons/md";
 
-
 const userInfoexample = ({ data, open, handleToggle, name }) => {
   // const [open, setOpen] = useState(false);
   // const [allClose, setAllClose] = useState(true);
