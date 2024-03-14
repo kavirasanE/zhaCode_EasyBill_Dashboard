@@ -214,7 +214,7 @@ const Users = () => {
         <h4 className="col-2"> Actions </h4>
       </div>
       {dataToDisplay.length == 0 && <p>No data to display</p>}
-      {dataToDisplay.length > 0 &&
+      {/* {dataToDisplay.length > 0 &&
         dataToDisplay.map((data, index) => (
           <UserInfo
             handleAddSubsc={handleAddSubsc}
@@ -226,10 +226,10 @@ const Users = () => {
             setModal2Open={setModal2Open}
             editData={editData}
           />
-        ))}
-      {/* {(sortedData.length > 0 ? sortedData : dataToDisplay).map((data, index) => (
+        ))} */}
+      {(sortedData.length > 0 ? sortedData : dataToDisplay).map((data, index) => (
          <UserInfo
-         handleEdit={handleEdit}
+        //  handleEdit={handleEdit}
          editData={editData}
          setEditData={setEditData}  
          data={data}
@@ -239,7 +239,7 @@ const Users = () => {
          name={data["Shop Name"]}
          handleToggle={handleToggle}
        />
-      ))} */}
+      ))}
     </div>
   );
 };
