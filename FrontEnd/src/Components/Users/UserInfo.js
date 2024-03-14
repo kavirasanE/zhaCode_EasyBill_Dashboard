@@ -4,9 +4,9 @@ import "./users.css";
 import "mdb-ui-kit/css/mdb.min.css";
 import { DownOutlined } from "@ant-design/icons";
 import { Checkbox, Dropdown, Space } from "antd";
-import { Button, Modal } from "antd";
+import { Button, Modal, DatePicker } from "antd";
 import DataContext from "../../Context/DataProvider";
-
+const { RangePicker } = DatePicker;
 const UserInfo = ({
   data,
   open,
@@ -24,10 +24,15 @@ const UserInfo = ({
   const [customSubDate, setCustomSubDate] = useState({});
   const [items, setItems] = useState([]);
   const [checkboxOpen, setCheckboxOpen] = useState(true);
+  const [selectedDate, setSelectedDate] = useState();
 
   const handleMenuClick = (e) => {
     const getPrice = subscription.filter((itm) => itm.Sub_Type_Id == e.key);
-    setPlan({ month: getPrice[0].Sub_Months, price: getPrice[0].Price });
+    setPlan({
+      Sub_Type_Id: getPrice[0].Sub_Type_Id,
+      month: getPrice[0].Sub_Months,
+      price: getPrice[0].Price,
+    });
   };
 
   useEffect(() => {
@@ -60,87 +65,25 @@ const UserInfo = ({
     setPlan({});
     setCustomSubDate({});
   }
-
+  const handleDatePicker = (end, date) => {
+    setSelectedDate(date);
+    setOpen(!opened)
+    console.log(selectedDate);
+  };
   return (
     <>
       {/* <Button type="primary" onClick={() => setModal2Open(true)}>
         Vertically centered modal dialog
       </Button> */}
-
       <Modal
-        title={editData["Shop Name"]}
+        title={`${editData["Shop Name"]} - ${editData["Mobile Number"]}`}
         centered
         open={modal2Open}
         onOk={handleOkButton}
         onCancel={() => setModal2Open(false)}
       >
-        <div className="row p-4">
-          <p className="col-6">
-            <span className="fw-bold"> ShopName: </span> {editData["Shop Name"]}
-          </p>
-          <p className="col-6">
-            <span className="fw-bold">Mobile Number:</span>{" "}
-            {editData["Mobile Number"]}
-          </p>
-        </div>
-
-        {/* Only if user choose custom the should appear, disappering dropdown */}
-
-        <div className="row p-4 gap-2">
-          <div className="row justify-content-center align-items-start">
-            <Dropdown
-              menu={{
-                items,
-                onClick: handleMenuClick,
-              }}
-              onOpenChange={handleOpenChange}
-              opened={opened}
-              className="col-4"
-              onChange={() => console.log("changed")}
-            >
-              <a onClick={(e) => e.preventDefault()} className="fw-bold">
-                <Space>
-                  {plan.month ? `${plan.month} - Months` : "Choose plan"}
-                  <DownOutlined />
-                </Space>
-              </a>
-            </Dropdown>
-            {!checkboxOpen && plan.price > 0 && (
-              <h5 className="col-4">
-                <span>Price:Rs.</span>
-                {plan.price}
-              </h5>
-            )}
-          </div>
-          {!checkboxOpen && (
-            <>
-              <div className="col-5">
-                <label id={data.UDR_Id}> Subscription Start date</label>
-                <input
-                  type="date"
-                  onChange={(e) => {
-                    setCustomSubDate((preVal) => ({
-                      ...preVal,
-                      startDate: e.target.value,
-                    }));
-                  }}
-                />
-              </div>
-              <div className="col-5">
-                <label id={data.UDR_Id}> Subscription end date</label>
-                <input
-                  type="date"
-                  onChange={(e) => {
-                    setCustomSubDate((preVal) => ({
-                      ...preVal,
-                      endDate: e.target.value,
-                    }));
-                  }}
-                />
-              </div>
-            </>
-          )}
-          <div class="form-check">
+        <div className="row m-4 fw-bold ">
+          <div class="form-check col-3">
             <input
               class="form-check-input"
               type="checkbox"
@@ -155,7 +98,111 @@ const UserInfo = ({
               Custom
             </label>
           </div>
-          <input type="text" value={"dummy"} className="mx-10" />
+          {checkboxOpen && (
+            <>
+              <div className="col-4">
+                <Dropdown
+                  menu={{
+                    items,
+                    onClick: handleMenuClick,
+                  }}
+                  onOpenChange={handleOpenChange}
+                  opened={opened}
+                  onChange={() => console.log("changed")}
+                >
+                  <a onClick={(e) => e.preventDefault()} className="fw-bold">
+                    <Space>
+                      {plan.month ? `${plan.month} - Months` : "Choose plan"}
+                      <DownOutlined />
+                    </Space>
+                  </a>
+                </Dropdown>
+              </div>
+              <div className="col-5">
+                {plan.price > 0 && (
+                  <h5>
+                    <span>Price:Rs.</span>
+                    {plan.price}
+                  </h5>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* <div className="col-5">
+                <label id={data.UDR_Id}> Subscription Start date</label>
+                <input
+                  type="date"
+                  onChange={(e) => {
+                    setCustomSubDate((preVal) => ({
+                      ...preVal,
+                      startDate: e.target.value,
+                    }));
+                  }}
+                />
+          
+              </div>
+              <div className="col-5">
+                <label id={data.UDR_Id}> Subscription end date</label>
+                <input
+                  type="date"
+                  onChange={(e) => {
+                    setCustomSubDate((preVal) => ({
+                      ...preVal,
+                      endDate: e.target.value,
+                    }));
+                  }}
+                />
+              </div> */}
+
+        <div className="row px-4 gap-2">
+          {!checkboxOpen && (
+            <div className="fw-bold">
+              <Space direction="vertical" size={12}>
+                <RangePicker
+                  picker="date"
+                  id={{
+                    start: "startInput",
+                    end: "endInput",
+                  }}
+                  onFocus={(_, info) => {
+                    console.log("Focus:", info.range);
+                  }}
+                  onBlur={(_, info) => {
+                    console.log("Blur:", info.range);
+                  }}
+                  onChange={handleDatePicker}
+                />
+
+                {/* <RangePicker
+                  picker="year"
+                  id={{
+                    start: "startInput",
+                    end: "endInput",
+                  }}
+                  onFocus={(_, info) => {
+                    console.log("Focus:", info.range);
+                  }}
+                  onBlur={(_, info) => {
+                    console.log("Blur:", info.range);
+                  }}
+                /> */}
+              </Space>
+              {opened  &&
+                <>
+                  <p className="fw-italic text-success ">
+                    Your Selected Date is between : {selectedDate[0]} to
+                    {selectedDate[1]}
+                  </p>
+                </>
+              }
+            </div>
+          )}
+          <div className="row"> 
+           <label className="col fw-bold ">Description</label>
+          <textarea type="textarea" placeholder="Enter your Description" className="border-gray m-3" rows={4} cols={50} />
+          </div>
         </div>
       </Modal>
 
@@ -233,7 +280,7 @@ const UserInfo = ({
           style={userStyles}
         >
           <div className="d-flex justify-content-end align-items-center gap-3 mb-4">
-            {data.Subscription && (
+            {!data.Subscription && (
               <button
                 className="btn btn-primary"
                 id={data.UDR_Id}

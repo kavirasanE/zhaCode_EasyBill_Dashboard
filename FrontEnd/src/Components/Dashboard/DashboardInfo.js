@@ -5,22 +5,23 @@ const DashboardInfo = ({ data }) => {
   console.log(data);
   return (
     <div className="row p-4 ">
-      <button className="col-8 col-md-2  border-secondary rounded-4 m-2 p-2 lg:py-4 fw-bold bg-white " onClick={() => setOpen(!open)} >
+      <button className="col-8 col-md-2  border-secondary rounded-4 m-2 p-2 lg:py-4 fw-bold bg-white " onClick={() => setOpen(false)} >
         Subscribed Users: {data.SubscribedUsers?.length || 0}
       </button>
-      <button className="col-8 col-md-2  border-secondary rounded-4 m-2 p-2 fw-bold bg-white" onClick={() => setOpen(false)}>
+      <button className="col-8 col-md-2  border-secondary rounded-4 m-2 p-2 fw-bold bg-white" onClick={() => setOpen(true)}>
         Not Subscribed: {data.NotSubscribed?.length || 0}
       </button>
-      <button className="col-8 col-md-2 border-secondary rounded-4 m-2 p-2 fw-bold bg-white" onClick={() => setOpen(true)}>
+      <button className="col-8 col-md-2 border-secondary rounded-4 m-2 p-2 fw-bold bg-white" onClick={() => setOpen(false)}>
         Active Users: {data.Active?.length || 0}
       </button>
-      <button className="col-8 col-md-2 border-secondary rounded-4 m-2 p-2 fw-bold bg-white" onClick={() => setOpen(false)}>
+      <button className="col-8 col-md-2 border-secondary rounded-4 m-2 p-2 fw-bold bg-white" onClick={() => setOpen(true)}>
         Deactivated Users: {data.Inactive?.length || 0}
       </button>
-      <button className="col-8 col-md-2 border-secondary rounded-4 m-2 p-2 fw-bold bg-white" onClick={() => setOpen(false)}>
+      <button className="col-8 col-md-2 border-secondary rounded-4 m-2 p-2 fw-bold bg-white" onClick={() => setOpen(true)}>
         Expired: {data.Expired?.length || 0}
       </button>
-      {open ? <div> 
+      {(!open && data.SubscribedUsers?.length >0 ) ?
+       <div> 
         <div className="border m-4">
           <table >
             <thead className="border border-black bg-success text-white">
@@ -31,7 +32,8 @@ const DashboardInfo = ({ data }) => {
               </tr>
             </thead>
            
-            {data.SubscribedUsers.map((datas,index) => (
+            { data.SubscribedUsers.map((datas,index) => (
+               <>
                <tbody className="border border-black ">
               <tr className="row text-center p-2">
                 <td className="col-4 border-black border-end">{datas["Shop Name"]}</td>
@@ -39,8 +41,9 @@ const DashboardInfo = ({ data }) => {
                 <td className="col-4">{datas["Address"]}</td>
               </tr>
               </tbody>
+              </>
                ))}
-            
+             
           </table>
           <p></p>
           <p></p>

@@ -3,11 +3,12 @@ import React from "react";
 const ManageSubscriptionInfo = ({ data, transaction, subscriptionOpen }) => {
   return (
     <>
-      <div className="m-4 d-flex justify-content-end ">
-        <button className="px-4 mx-4 rounded btn btn-primary">Add</button>
-      </div>
+     
       {!subscriptionOpen ? (
         <>
+         <div className="m-4 d-flex justify-content-end ">
+        <button className="px-4 mx-4 rounded btn btn-primary">Add</button>
+      </div>
           {data.map((subscription, index) => (
             <div className="row border border-black m-4 rounded-4 py-2">
               <div className="col">
@@ -39,7 +40,7 @@ const ManageSubscriptionInfo = ({ data, transaction, subscriptionOpen }) => {
         <>
           {transaction.map((transactions) => (
             <>
-              <div className="row border border-black m-4 rounded-4 py-2 ">
+              <div className="row border border-primary m-4 rounded-4 py-2 ">
                 <div className="col-2">
                   <p className=" ">
                     Price:Rs. <span className="fw-bold text-black">{transactions.Price} </span>
@@ -47,7 +48,7 @@ const ManageSubscriptionInfo = ({ data, transaction, subscriptionOpen }) => {
                 </div>
                 <div className="col">
                   <p className="">
-                    Validity(In Months): <span className="fw-bold text-black">{transactions.ShopName}</span>
+                    Shop Name: <span className="fw-bold text-black">{transactions.ShopName}</span>
                   </p>
                 </div>
                 <div className="col">
