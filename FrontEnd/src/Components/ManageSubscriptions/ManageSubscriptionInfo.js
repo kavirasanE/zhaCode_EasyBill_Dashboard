@@ -17,7 +17,7 @@ const ManageSubscriptionInfo = ({ data, transaction, subscriptionOpen }) => {
                 </p>
               </div>
               <div className="col">
-                <p className="md:border-end md:border-black">
+                <p className="md:border-end md:border-white">
                   Validity(In Months):{subscription.Sub_Months}
                 </p>
               </div>
@@ -40,9 +40,9 @@ const ManageSubscriptionInfo = ({ data, transaction, subscriptionOpen }) => {
         <>
           {transaction.map((transactions) => (
             <>
-              <div className="row border border-primary m-4 rounded-4 py-2 ">
+              <div className="row border border-dark m-4 rounded-4 py-2  ">
                 <div className="col-2">
-                  <p className=" ">
+                  <p className="">
                     Price:Rs. <span className="fw-bold text-black">{transactions.Price} </span>
                   </p>
                 </div>
@@ -54,7 +54,7 @@ const ManageSubscriptionInfo = ({ data, transaction, subscriptionOpen }) => {
                 <div className="col">
                   <p className="text-nowrap">Transaction Id: <span className="fw-bold text-black">{transactions.TransactionId}</span></p>
                 </div>
-                <div className="col">
+                <div className="col ">
                   <p>Payed On :<span className="fw-bold text-black">{transactions.CreatedOn}</span></p>
                 </div>
                 {/* <div>

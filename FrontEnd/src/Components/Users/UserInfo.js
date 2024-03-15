@@ -205,7 +205,8 @@ const UserInfo = ({
           </div>
         </div>
       </Modal>
-
+     
+     
       {!open ? (
         <div
           style={userStyles}
@@ -244,7 +245,7 @@ const UserInfo = ({
             >
               {!edit ? "Edit" : "Cancel"}
             </button> */}
-            {data.Subscription && (
+            {!data.Subscription && (
               <button
                 className="btn btn-primary"
                 id={data.UDR_Id}
