@@ -230,14 +230,14 @@ const Users = () => {
       {(sortedData.length > 0 ? sortedData : dataToDisplay).map((data, index) => (
          <UserInfo
         //  handleEdit={handleEdit}
-         editData={editData}
-         setEditData={setEditData}  
-         data={data}
-         key={index}
-         open={testVal == data.UDR_Id ? true : false}
-         edit={editData.UDR_Id == data.UDR_Id ? true : false}
-         name={data["Shop Name"]}
-         handleToggle={handleToggle}
+            handleAddSubsc={handleAddSubsc}
+            data={data}
+            key={index}
+            open={testVal == data.UDR_Id ? true : false}
+            handleToggle={handleToggle}
+            modal2Open={modal2Open}
+            setModal2Open={setModal2Open}
+            editData={editData}
        />
       ))}
     </div>
