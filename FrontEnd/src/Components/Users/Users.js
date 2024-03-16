@@ -187,7 +187,18 @@ const Users = () => {
     setSortedData(copy);
     console.log(sortedData);
   };
-
+ const items =[
+  { id:1, label:"ALL"},
+    {id:2 ,label:"Active" },
+   {id:3, label:"In-Active"}
+ ]
+ const [selectedItem,setSelectedItem] =useState();
+ const handleSelectedItem = () => {
+  //  console.log
+  //  setSelectedItem()
+  //  console.log(selectedItem)
+ 
+ }
   return (
     <div>
       {/* <div className="d-flex justify-content-end aligin-items-center p-2 ">
@@ -205,7 +216,24 @@ const Users = () => {
           Search
         </button>
   </div> */}
-         
+       <div className="col-6 p-4 ">
+                <Dropdown
+                  menu={{
+                  items,
+                   onClick: handleSelectedItem
+                  }}
+                  // onOpenChange={handleOpenChange}
+                  // opened={opened}
+                >
+                  <p onClick={(e) => e.preventDefault()} className="fw-bold text-nowrap btn btn-dark ">
+                    <Space>
+                      {/* {plan.month ? `${plan.month} - Months` : "Choose plan"} */}
+                      {selectedItem ? selectedItem : items[0].label}
+                      <DownOutlined />
+                    </Space>
+                  </p>
+                </Dropdown>
+              </div>  
 
   
       {dataToDisplay.length == 0 && <p>No data to display</p>}
