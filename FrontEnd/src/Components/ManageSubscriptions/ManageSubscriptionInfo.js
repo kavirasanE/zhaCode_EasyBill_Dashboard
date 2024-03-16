@@ -3,26 +3,32 @@ import React from "react";
 const ManageSubscriptionInfo = ({ data, transaction, subscriptionOpen }) => {
   return (
     <>
-     
       {!subscriptionOpen ? (
         <>
-         <div className="m-4 d-flex justify-content-end ">
-        <button className="px-4 mx-4 rounded btn btn-primary">Add</button>
-      </div>
+          <div className="m-4 d-flex justify-content-end ">
+            <button className="px-4 mx-4 rounded btn btn-primary">Add</button>
+          </div>
           {data.map((subscription, index) => (
             <div className="row border border-black m-4 rounded-4 py-2">
               <div className="col">
                 <p className="md:border-end md:border-black text-nowrap">
-                  Price:Rs.{subscription.Price}
+                  <span className="fw-bold text-black"> Price:Rs. </span>{" "}
+                  {subscription.Price}
                 </p>
               </div>
               <div className="col">
                 <p className="md:border-end md:border-white">
-                  Validity(In Months):{subscription.Sub_Months}
+                  <span className="fw-bold text-black">
+                    Validity(In Months) :{" "}
+                  </span>
+                  {subscription.Sub_Months}
                 </p>
               </div>
               <div className="col">
-                <p>IsActive:{subscription.IsActive}</p>
+                <p>
+                  <span className="fw-bold text-black">IsActive: </span>
+                  {subscription.IsActive}
+                </p>
               </div>
               {/* <div>
            <p className="border-top  border-secondary px-4 p-2 ">Description: {data.description}</p>
@@ -40,27 +46,34 @@ const ManageSubscriptionInfo = ({ data, transaction, subscriptionOpen }) => {
         <>
           {transaction.map((transactions) => (
             <>
-              <div className="row border border-dark m-4 rounded-4 py-2  ">
-                <div className="col-2">
-                  <p className="">
-                    Price:Rs. <span className="fw-bold text-black">{transactions.Price} </span>
+              <div className="row border border-dark m-4 rounded-4 py-2 justify-content-center ">
+                <div className="col">
+                  <p className="text-nowrap">
+                    <span className="fw-bold text-black">Price:Rs. </span>
+                    {transactions.Price}
                   </p>
                 </div>
                 <div className="col">
-                  <p className="">
-                    Shop Name: <span className="fw-bold text-black">{transactions.ShopName}</span>
+                  <p className="text-nowrap">
+                    <span className="fw-bold text-black"> Shop Name:</span>{" "}
+                    {transactions.ShopName}
                   </p>
                 </div>
                 <div className="col">
-                  <p className="text-nowrap">Transaction Id: <span className="fw-bold text-black">{transactions.TransactionId}</span></p>
+                  <p className="text-nowrap">
+                    <span className="fw-bold text-black">Transaction Id:</span>{" "}
+                    {transactions.TransactionId}
+                  </p>
                 </div>
                 <div className="col ">
-                  <p>Payed On :<span className="fw-bold text-black">{transactions.CreatedOn}</span></p>
+                  <p className="text-nowrap">
+                    <span className="fw-bold text-black">Payed On : </span>
+                    {transactions.CreatedOn}
+                  </p>
                 </div>
                 {/* <div>
             <p className="border-top  border-secondary px-4 p-2 ">Description: {data.description}</p>
           </div> */}
-                
               </div>
             </>
           ))}

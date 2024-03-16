@@ -7,10 +7,9 @@ import React, {
   useEffect,
 } from "react";
 import UserInfo from "./UserInfo";
-import { useSearchParams } from "react-router-dom";
 import DataContext from "../../Context/DataProvider";
-
-import { Button, Modal } from "antd";
+import { DownOutlined } from "@ant-design/icons";
+import { Checkbox, Dropdown, Space } from "antd";
 
 const Users = () => {
   const { appName, data } = useContext(DataContext);
@@ -21,6 +20,7 @@ const Users = () => {
   const [searchItem, setSearchItem] = useState();
   const [modal2Open, setModal2Open] = useState(false);
 
+ 
   // const [data, setDate] = useState([
   //   {
   //     shopName: "Shop 1",
@@ -170,8 +170,8 @@ const Users = () => {
   function handleAddSubsc(e) {
     setModal2Open(true);
     console.log(e.target.id);
-    const [out] = data.filter(itm => itm.UDR_Id == e.target.id)
-    setEditData(out)
+    const [out] = data.filter((itm) => itm.UDR_Id == e.target.id);
+    setEditData(out);
   }
 
   const [sortedData, setSortedData] = useState([]);
@@ -190,7 +190,7 @@ const Users = () => {
 
   return (
     <div>
-      <div className="d-flex justify-content-end aligin-items-center p-2 ">
+      {/* <div className="d-flex justify-content-end aligin-items-center p-2 ">
         <input
           type="Search"
           value={searchItem}
@@ -204,15 +204,10 @@ const Users = () => {
         >
           Search
         </button>
-      </div>
-      <div className="row ms-4 mt-4">
-        <h4 className="col-4" onClick={handleSort}>
-          {" "}
-          Shop Name <span> {itemOpen ? "+" : "-"}</span>
-        </h4>
-        <h4 className="col-6"> Subscription</h4>
-        <h4 className="col-2"> Actions </h4>
-      </div>
+  </div> */}
+         
+
+  
       {dataToDisplay.length == 0 && <p>No data to display</p>}
       {/* {dataToDisplay.length > 0 &&
         dataToDisplay.map((data, index) => (
@@ -227,9 +222,10 @@ const Users = () => {
             editData={editData}
           />
         ))} */}
-      {(sortedData.length > 0 ? sortedData : dataToDisplay).map((data, index) => (
-         <UserInfo
-        //  handleEdit={handleEdit}
+      {(sortedData.length > 0 ? sortedData : dataToDisplay).map(
+        (data, index) => (
+          <UserInfo
+            //  handleEdit={handleEdit}
             handleAddSubsc={handleAddSubsc}
             data={data}
             key={index}
@@ -238,8 +234,9 @@ const Users = () => {
             modal2Open={modal2Open}
             setModal2Open={setModal2Open}
             editData={editData}
-       />
-      ))}
+          />
+        )
+      )}
     </div>
   );
 };

@@ -21,14 +21,16 @@ const UserInfo = ({
   const { subscription } = useContext(DataContext);
   const [plan, setPlan] = useState({});
   const [opened, setOpen] = useState(false);
-  const [customSubDate, setCustomSubDate] = useState({});
   const [items, setItems] = useState([]);
   const [checkboxOpen, setCheckboxOpen] = useState(true);
-  const [selectedDate, setSelectedDate] = useState();
 
   const handleMenuClick = (e) => {
+    setPlan({});
     const getPrice = subscription.filter((itm) => itm.Sub_Type_Id == e.key);
+    console.log(editData);
     setPlan({
+      type: "plan",
+      UDR_Id: editData.UDR_Id,
       Sub_Type_Id: getPrice[0].Sub_Type_Id,
       month: getPrice[0].Sub_Months,
       price: getPrice[0].Price,
@@ -59,17 +61,62 @@ const UserInfo = ({
   // };
 
   function handleOkButton(e) {
+    sendSubPlan(plan);
     setModal2Open(false);
-    console.log(plan);
-    console.log(customSubDate);
+
     setPlan({});
-    setCustomSubDate({});
   }
   const handleDatePicker = (end, date) => {
-    setSelectedDate(date);
-    setOpen(!opened)
-    console.log(selectedDate);
+    setPlan({});
+    const dataToAdd = {
+      type: "custom",
+      UDR_Id: editData.UDR_Id,
+      startDate: date[0],
+      endDate: date[1],
+      Sub_Type_Id: 0,
+    };
+    console.log(dataToAdd);
+    setPlan(dataToAdd);
+    setOpen(!opened);
   };
+
+  async function sendSubPlan(data) {
+    if (data.type == "plan") {
+      console.log("-----------plan");
+      console.log(data);
+      // fetch("http://localhost:8000/updateSub", {
+      //   method: "POST",
+      //   body: JSON.stringify({
+      //     type: data.type,
+      //     UDR_Id: data.UDR_Id,
+      //     Sub_Type_Id: data.Sub_Type_Id,
+      //     month: data.Sub_Type_Id,
+      //     price: data.Sub_Type_Id,
+      //   }),
+      //   headers: {
+      //     "Content-type": "application/json; charset=UTF-8",
+      //   },
+      // });
+    }
+    if (data.type == "custom") {
+      console.log("-----------custom");
+      console.log(data);
+
+      // fetch("http://localhost:8000/updateSub", {
+      //   method: "POST",
+      //   body: JSON.stringify({
+      //     type: data.type,
+      //     UDR_Id: data.UDR_Id,
+      //     startDate: data.startDate,
+      //     endDate: data.endDate,
+      //     Sub_Type_Id: data.Sub_Type_Id,
+      //   }),
+      //   headers: {
+      //     "Content-type": "application/json; charset=UTF-8",
+      //   },
+      // });
+    }
+  }
   return (
     <>
       {/* <Button type="primary" onClick={() => setModal2Open(true)}>
@@ -83,24 +130,24 @@ const UserInfo = ({
         onCancel={() => setModal2Open(false)}
       >
         <div className="row m-4 fw-bold ">
-          <div class="form-check col-3">
+          <div class="form-check ">
             <input
               class="form-check-input"
               type="checkbox"
               onClick={() => {
                 setCheckboxOpen(!checkboxOpen);
                 setPlan({});
-                setCustomSubDate({});
               }}
               id="flexCheckDefault"
             />
-            <label class="form-check-label" for="flexCheckDefault">
-              Custom
+            <label class="form-check-label text-nowrap" for="flexCheckDefault">
+            Custom Plan
             </label>
           </div>
-          {checkboxOpen && (
+          <div className="row px-4 mt-4 ">   
+          {checkboxOpen ? (
             <>
-              <div className="col-4">
+              <div className="col-6">
                 <Dropdown
                   menu={{
                     items,
@@ -110,15 +157,15 @@ const UserInfo = ({
                   opened={opened}
                   onChange={() => console.log("changed")}
                 >
-                  <a onClick={(e) => e.preventDefault()} className="fw-bold">
+                  <p onClick={(e) => e.preventDefault()} className="fw-bold text-nowrap btn btn-primary ">
                     <Space>
                       {plan.month ? `${plan.month} - Months` : "Choose plan"}
                       <DownOutlined />
                     </Space>
-                  </a>
+                  </p>
                 </Dropdown>
               </div>
-              <div className="col-5">
+              <div className="col-6">
                 {plan.price > 0 && (
                   <h5>
                     <span>Price:Rs.</span>
@@ -127,7 +174,27 @@ const UserInfo = ({
                 )}
               </div>
             </>
+          ) :(
+            <div className="fw-bold">
+              <Space direction="vertical" size={12}>
+                <RangePicker
+                  picker="date"
+                  id={{
+                    start: "startInput",
+                    end: "endInput",
+                  }}
+                  onFocus={(_, info) => {
+                    console.log("Focus:", info.range);
+                  }}
+                  onBlur={(_, info) => {
+                    console.log("Blur:", info.range);
+                  }}
+                  onChange={handleDatePicker}
+                />
+              </Space>
+            </div>
           )}
+          </div>
         </div>
 
         {/* <div className="col-5">
@@ -156,7 +223,7 @@ const UserInfo = ({
                 />
               </div> */}
 
-        <div className="row px-4 gap-2">
+        {/* <div className="row px-4 ">
           {!checkboxOpen && (
             <div className="fw-bold">
               <Space direction="vertical" size={12}>
@@ -174,39 +241,23 @@ const UserInfo = ({
                   }}
                   onChange={handleDatePicker}
                 />
-
-                {/* <RangePicker
-                  picker="year"
-                  id={{
-                    start: "startInput",
-                    end: "endInput",
-                  }}
-                  onFocus={(_, info) => {
-                    console.log("Focus:", info.range);
-                  }}
-                  onBlur={(_, info) => {
-                    console.log("Blur:", info.range);
-                  }}
-                /> */}
               </Space>
-              {opened  &&
-                <>
-                  <p className="fw-italic text-success ">
-                    Your Selected Date is between : {selectedDate[0]} to
-                    {selectedDate[1]}
-                  </p>
-                </>
-              }
             </div>
           )}
-          <div className="row"> 
-           <label className="col fw-bold ">Description</label>
-          <textarea type="textarea" placeholder="Enter your Description" className="border-gray m-3" rows={4} cols={50} />
+          </div> */}
+          <div className="row">
+            <label className="col fw-bold ">Description</label>
+            <textarea
+              type="textarea"
+              placeholder="Enter your Description"
+              className="border-gray mt-2 "
+              rows={4}
+              cols={50}
+            />
           </div>
-        </div>
+        
       </Modal>
-     
-     
+
       {!open ? (
         <div
           style={userStyles}
@@ -223,20 +274,20 @@ const UserInfo = ({
             <label for="floatingInput">Shop Name</label>
             
           </div> */}
-          <p className="col mx-2 my-2">
-            Shop Name: <span>{data["Shop Name"]}</span>
+          <p className="col  my-2 ">
+            <span className="fw-bold text-black"> Shop Name:</span>
+            {data["Shop Name"]}
           </p>
-          <p className=" col mx-2 my-2">
-            Subscription:
-            <span className="text-success fw-bold">
-              {data.Subscription ? (
-                "Active"
-              ) : (
-                <span className="text-danger">InActive</span>
-              )}
-            </span>
+          <p className=" col my-2">
+            <span className="fw-bold text-black"> Subscription:</span>
+
+            {data.Subscription ? (
+              <span className="text-success">Active</span>
+            ) : (
+              <span className="text-danger">InActive</span>
+            )}
           </p>
-          <div className=" col d-flex justify-content-end align-items-center mx ">
+          <div className="lg:row col d-flex  justify-content-end align-items-center gap-2">
             {/* <button
               id={data.UDR_Id}
               onClick={handleEdit}
@@ -245,9 +296,9 @@ const UserInfo = ({
             >
               {!edit ? "Edit" : "Cancel"}
             </button> */}
-            {!data.Subscription && (
+            {data.Subscription && (
               <button
-                className="btn btn-primary"
+                className="btn btn-primary text-nowrap sm:col"
                 id={data.UDR_Id}
                 onClick={handleAddSubsc}
               >
@@ -256,7 +307,7 @@ const UserInfo = ({
             )}
             <button
               id={data.UDR_Id}
-              className=" lg:px-4 mx-4  rounded btn btn-danger"
+              className="my-2 rounded btn btn-danger sm:col"
             >
               Delete
             </button>
@@ -281,9 +332,9 @@ const UserInfo = ({
           style={userStyles}
         >
           <div className="d-flex justify-content-end align-items-center gap-3 mb-4">
-            {!data.Subscription && (
+            {data.Subscription && (
               <button
-                className="btn btn-primary"
+                className="btn btn-primary text-nowrap"
                 id={data.UDR_Id}
                 onClick={handleAddSubsc}
               >
@@ -311,36 +362,49 @@ const UserInfo = ({
           </div>
 
           <div className="col ">
-            <div class="form-floating mb-3">
-              <input
-                type="text"
-                class="form-control fw-bold "
-                id="floatingInput"
-                placeholder="name@example.com"
-                value={data["Shop Name"]}
-              />
-              <label for="floatingInput">Shop Name</label>
-            </div>
-            <p>Register On: {data["Register On"]}</p>
-            <p>Device ID: {data["Device ID"]}</p>
+            <p>
+              <span className="fw-bold text-black"> Shop Name:</span>{" "}
+              {data["Shop Name"]}
+            </p>
+            <p>
+              {" "}
+              <span className="fw-bold text-black">Register On:</span>{" "}
+              {data["Register On"]}
+            </p>
+            <p>
+              {" "}
+              <span className="fw-bold text-black">Device ID:</span>{" "}
+              {data["Device ID"]}
+            </p>
           </div>
           <div className="col">
             <p>
-              Subscription:{" "}
-              <span className="text-success font-weight-bold">
-                {data.Subscription ? (
-                  "Active"
-                ) : (
-                  <span className="text-danger">InActive</span>
-                )}
-              </span>
+              <span className="fw-bold text-black"> Subscription:</span>
+
+              {data.Subscription ? (
+                <span className="text-success">Active</span>
+              ) : (
+                <span className="text-danger">InActive</span>
+              )}
             </p>
-            <p>Sub Start Date: {data.Subcription_Start_Date}</p>
-            <p>Sub End Date: {data.Subcription_End_Date}</p>
+            <p>
+              <span className="fw-bold text-black">Sub Start Date:</span>{" "}
+              {data.Subcription_Start_Date}
+            </p>
+            <p>
+              <span className="fw-bold text-black">Sub End Date:</span>{" "}
+              {data.Subcription_End_Date}
+            </p>
           </div>
           <div className="col">
-            <p>Address: {data.Address}</p>
-            <p>Mobile Number: {data["Mobile Number"]}</p>
+            <p>
+              <span className="fw-bold text-black">Address:</span>
+              {data.Address}
+            </p>
+            <p>
+              <span className="fw-bold text-black">Mobile Number:</span>{" "}
+              {data["Mobile Number"]}
+            </p>
           </div>
         </div>
       )}
